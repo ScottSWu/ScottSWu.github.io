@@ -1,0 +1,60 @@
+# Theme Settings
+# theme              : "minimal-mistakes-jekyll"
+# remote_theme       : "mmistakes/minimal-mistakes"
+minimal_mistakes_skin: "default" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
+
+# Site Settings
+locale         : "en-US"
+title          : Scott Wu
+title_separator: "-"
+name           : "Scott Wu"
+description    : "This is my site"
+url            : "https://scwu.io"
+baseurl        : ""
+repository     : "ScottSWu/scottswu.github.io"
+
+# File Settings
+encoding: "utf-8"
+markdown_ext: "markdown,mkdown,mkdn,mkd,md"
+
+# Conversion Settings
+markdown: kramdown
+highlighter: rouge
+lsi: false
+excerpt_separator: "\n\n"
+incremental: false
+
+# Plugins
+plugins:
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-gist
+  - jekyll-feed
+  - jemoji
+
+whitelist:
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-gist
+  - jekyll-feed
+  - jemoji
+
+# Exclude from processing.
+# The following items will not be processed, by default. Create a custom list
+# to override the default setting.
+exclude:
+  - old/
+#   - Gemfile
+#   - Gemfile.lock
+#   - node_modules
+#   - vendor/bundle/
+#   - vendor/cache/
+#   - vendor/gems/
+#   - vendor/ruby/
+
+# Site Author
+author:
+  name   : "Scott Wu"
+  avatar : "/assets/images/avatar.jpg"
+  email  : "me@scwu.io"
+  github : "ScottSWu"
