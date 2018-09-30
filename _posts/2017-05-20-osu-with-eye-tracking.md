@@ -18,4 +18,4 @@ Future things to try:
 - Hidden, Flashlight
 - CtB, Mania
 
-{% youtube 19SKyVpZPTE %}
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/19SKyVpZPTE?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
