@@ -1,0 +1,289 @@
+<html>
+<head>
+<!--
+Scott Wu
+47be1f67c35cb3bd7fdaae284c21c69a
+-->
+<title>Scott Wu ~ Cherry Blossom Tree</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8;" />
+<script type="text/javascript" src="/lib/three.min-57.js"></script>
+<script type="text/javascript" src="/lib/webgl-utils.js"></script>
+<style type="text/css">
+body {
+	background-color: #87CEFA;
+	background-position: left top;
+	overflow: hidden;
+	padding: 0px;
+}
+
+#wrap {
+	width: 100%;
+	height: 100%;
+}
+
+#instructions {
+	position: absolute;
+	top: 0px;
+	z-index: 2;
+	color: black;
+}
+
+#container {
+	width: 100%;
+	height: 100%;
+}
+</style>
+<script type="text/javascript">
+var ctx,renderer,jsl,jslLoaded,keys,mouse;
+var scene,textures,camera,focus;
+var tree,ground,leaves,sun,light;
+
+function Leaf(a,b,c,d,e) {
+	this.mesh = a;
+	this.rotate = b;
+	this.center = c;
+	this.period = d;
+	this.mesh.position.y = this.center.y;
+	
+	this.step = function() {
+		this.mesh.position.x = this.center.x + Math.sin(this.period.x*this.mesh.position.y);
+		this.mesh.position.y -= this.period.y;
+		this.mesh.position.z = this.center.z + Math.sin(this.period.z*this.mesh.position.y);
+		this.mesh.rotation.x += this.rotate.x;
+		this.mesh.rotation.y += this.rotate.y;
+		this.mesh.rotation.z += this.rotate.z;
+		if (this.mesh.position.y<-1) {
+			this.mesh.position.set(spread*(Math.random()*2-1),64,spread*(Math.random()*2-1));
+		}
+	}
+}
+
+function init() {
+	keys = new Array(256);
+	for (var i=0; i<keys.length; i++) keys[i] = false;
+	mouse = [0,0,0,0,0];
+	setEvents(document.body);
+	
+	ctx = document.getElementById("container");
+	
+	renderer = new THREE.WebGLRenderer();
+	renderer.setSize(ctx.offsetWidth,ctx.offsetHeight);
+	ctx.appendChild(renderer.domElement);
+	jsl = new THREE.JSONLoader(true);
+	jslLoaded = new Array(2);
+	for (var i=0; i<jslLoaded.length; i++) jslLoaded[i] = false;
+	
+	scene = new THREE.Scene();
+	scene.fog = new THREE.Fog(0x87CEFA,64,108);
+	camera = new THREE.PerspectiveCamera(45,ctx.offsetWidth/ctx.offsetHeight,0.1,128);
+	focus = new THREE.Vector3(0,0,0);
+	camera.position.set(12,12,0);
+	camera.lookAt(focus);
+	camx = -Math.PI;
+	camy = -Math.PI/8;
+	
+	textures = [
+		THREE.ImageUtils.loadTexture("lib/ground.png"),
+		THREE.ImageUtils.loadTexture("lib/leaf1.png")
+	];
+	textures[0].wrapS = THREE.RepeatWrapping;
+	textures[0].wrapT = THREE.RepeatWrapping;
+	
+	sun = new THREE.DirectionalLight(0xFFFFFF,2);
+	sun.position.set(1,4,1);
+	light = new THREE.PointLight(0xFFFFFF,1);
+	light.position.set(0,0,0);
+	
+	jsl.load("lib/SpringTree.js",json1);
+	//jsl.load("lib/SpringGround.js",json2);
+	json2(null,null);
+	//jsl.load("lib/SpringLeaf.js",json3);
+	json3(null,null);
+}
+
+function json1(geo,mat) {
+	tree = new THREE.Mesh(geo,new THREE.MeshFaceMaterial(mat));
+	tree.position.y = 8;
+	jsonFinish(0);
+}
+
+function json2(geo,mat) {
+	ground = new THREE.Mesh(getGroundGeo(),new THREE.MeshPhongMaterial({color: 0x808080,specular: 0x000000,ambient: 0x000000,side: THREE.DoubleSide,map: textures[0]}));
+	jsonFinish(1);
+}
+
+function json3(geo,mat) {
+	var num = 4096,size = 0.2;
+	leaves = new Array(num);
+	geo = new THREE.Geometry();
+	geo.vertices.push(new THREE.Vector3(-size,0,-size));
+	geo.vertices.push(new THREE.Vector3(-size,0, size));
+	geo.vertices.push(new THREE.Vector3( size,0, size));
+	geo.vertices.push(new THREE.Vector3( size,0,-size));
+	geo.faces.push(new THREE.Face4(0,1,2,3));
+	geo.faceVertexUvs[0].push([new THREE.Vector2(0,0),new THREE.Vector2(0,1),new THREE.Vector2(1,1),new THREE.Vector2(1,0)]);
+	mat = new THREE.MeshLambertMaterial({color: 0x808080,specular: 0x000000,ambient: 0x000000,map: textures[1],side: THREE.DoubleSide,transparent: true});
+	for (var i=0; i<leaves.length; i++) {
+		leaves[i] = new Leaf(
+			new THREE.Mesh(geo,mat),
+			new THREE.Vector3(Math.random()*0.01,Math.random()*0.01,Math.random()*0.01),
+			new THREE.Vector3(spread*(Math.random()*2-1),64*Math.random(),spread*(Math.random()*2-1)),
+			new THREE.Vector3(Math.random()+1,Math.random()*0.01+0.01,Math.random()+1)
+			);
+	}
+	geo.mergeVertices();
+	geo.computeFaceNormals();
+	geo.computeVertexNormals();
+	jsonFinish(2);
+}
+
+function jsonFinish(f) {
+	jslLoaded[f] = true;
+	if (!jsonAllLoaded()) return;
+	
+	scene.add(camera);
+	scene.add(tree);
+	scene.add(ground);
+	for (var i=0; i<leaves.length; i++) {
+		scene.add(leaves[i].mesh);
+	}
+	scene.add(sun);
+	scene.add(light);
+	
+	frame();
+}
+
+function jsonAllLoaded() {
+	for (var i=0; i<jslLoaded.length; i++) if (jslLoaded[i]==false) return false;
+	return true;
+}
+
+function getGroundGeo() {
+	var geo = new THREE.Geometry();
+	var size = field,uvsize = 4,step = 2,ind = 0;
+	var a = 8,b = 0.005;
+	var ci,cj,ni,nj;
+	for (var i=-size; i<size; i+=step) {
+		for (var j=-size; j<size; j+=step) {
+			ci = i;
+			cj = j;
+			ni = i+step;
+			nj = j+step;
+			geo.vertices.push(new THREE.Vector3(ci,normal(a,b,ci*ci+cj*cj),cj));
+			geo.vertices.push(new THREE.Vector3(ci,normal(a,b,ci*ci+nj*nj),nj));
+			geo.vertices.push(new THREE.Vector3(ni,normal(a,b,ni*ni+nj*nj),nj));
+			geo.vertices.push(new THREE.Vector3(ni,normal(a,b,ni*ni+cj*cj),cj));
+			geo.faces.push(new THREE.Face4(ind++,ind++,ind++,ind++));
+			geo.faceVertexUvs[0].push([
+				new THREE.Vector2(ci/size*uvsize,cj/size*uvsize),
+				new THREE.Vector2(ci/size*uvsize,nj/size*uvsize),
+				new THREE.Vector2(ni/size*uvsize,nj/size*uvsize),
+				new THREE.Vector2(ni/size*uvsize,cj/size*uvsize)
+			]);
+		}
+	}
+	geo.mergeVertices();
+	geo.computeFaceNormals();
+	geo.computeVertexNormals();
+	return geo;
+}
+
+function normal(a,b,x) {
+	return a*Math.pow(Math.E,-x*b);
+}
+
+function setEvents(element) {
+	element.onkeydown = function(event) {
+		keys[event.which] = true;
+	};
+	element.onkeyup = function(event) {
+		keys[event.which] = false;
+	};
+	element.onmousemove = function(event) {
+		mouse[0] = event.clientX - ctx.offsetLeft;
+		mouse[1] = event.clientY - ctx.offsetTop;
+	}
+	element.onmousedown = function(event) {
+		mouse[0] = event.clientX - ctx.offsetLeft;
+		mouse[1] = event.clientY - ctx.offsetTop;
+		mouse[2] = event.clientX - ctx.offsetLeft;
+		mouse[3] = event.clientY - ctx.offsetTop;
+		mouse[4] = 1;
+		camx2 = camx;
+		camy2 = camy;
+	}
+	element.onmouseup = function(event) {
+		mouse[0] = event.clientX - ctx.offsetLeft;
+		mouse[1] = event.clientY - ctx.offsetTop;
+		mouse[4] = 0;
+	}
+	element.onfocus = function(event) {
+		mouse[4] = 0;
+	}
+	element.onblur = function(event) {
+		mouse[4] = 0;
+	}
+}
+
+var camx = 0,camy = 0,camx2 = 0,camy2 = 0,sunrot = 0; // ud,lr
+var dir = new THREE.Vector3(0,0,0);
+var field = 128,spread = 32;
+function frame() {
+	requestAnimFrame(frame);
+	if (mouse[4]==1) {
+		var shiftx = mouse[2]-mouse[0];
+		var shifty = mouse[3]-mouse[1];
+		camx = camx2 - shiftx/ctx.offsetWidth*4*Math.PI;
+		camy = camy2 + shifty/ctx.offsetHeight*Math.PI;
+	}
+	var r = 0.4;
+	dir = new THREE.Vector3(r*Math.cos(camx)*Math.cos(camy),r*Math.sin(camy),r*Math.sin(camx)*Math.cos(camy));
+	var sidedir = new THREE.Vector3(r*Math.cos(camx-Math.PI/2)*Math.cos(camy),0,r*Math.sin(camx-Math.PI/2)*Math.cos(camy));
+	
+	if (keys[87]) {
+		camera.position.x += dir.x;
+		camera.position.y += dir.y;
+		camera.position.z += dir.z;
+	}
+	if (keys[83]) {
+		camera.position.x -= dir.x;
+		camera.position.y -= dir.y;
+		camera.position.z -= dir.z;
+	}
+	if (keys[65]) {
+		camera.position.x += sidedir.x;
+		camera.position.y += sidedir.y;
+		camera.position.z += sidedir.z;
+	}
+	if (keys[68]) {
+		camera.position.x -= sidedir.x;
+		camera.position.y -= sidedir.y;
+		camera.position.z -= sidedir.z;
+	}
+	if (keys[81]) {
+		camera.position.y += r;
+	}
+	if (keys[90]) {
+		camera.position.y -= r;
+	}
+	
+	dir.x += camera.position.x;
+	dir.y += camera.position.y;
+	dir.z += camera.position.z;
+	camera.lookAt(dir);
+	
+	for (var i=0; i<leaves.length; i++) {
+		leaves[i].step();
+	}
+	
+	renderer.render(scene,camera);
+}
+</script>
+</head>
+<body onload="javascript: init(); void 0;">
+<div id="wrap">
+	<div id="instructions">Click and drag to move camera. Use W and S to move forward and backward, A and D to move left and right, Q and Z to move up and down.</div>
+	<div id="container"></div>
+</div>
+</body>
+</html>

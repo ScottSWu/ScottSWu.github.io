@@ -1,0 +1,120 @@
+<html>
+<head>
+<!--
+	Scott Wu
+	Charles Yin
+	Richard Zhu
+	Saurav Das
+-->
+<title></title>
+<link href="Electrolize.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/lib/three.min.js"></script>
+<script type="text/javascript" src="main.js"></script>
+<style type="text/css">
+body {
+	overflow: hidden;
+}
+
+#canvas_container {
+	position: absolute;
+	margin: 0px;
+	padding: 0px;
+	width: 100%;
+	height: 100%;
+	top: 0px;
+	left: 0px;
+}
+
+#bsc {
+	width: 100%;
+	height: 100%;
+	outline: 1px solid black;
+}
+
+#audio_container {
+	position: absolute;
+	text-align: right;
+	left: 0px;
+	width: 100%;
+	top: 3%;
+}
+
+#input_container {
+	position: absolute;
+	text-align: center;
+	width: 100%;
+	top: 20%;
+	font-family: "Electrolize", Helvetica, sans-serif;
+	font-size: 20px;
+}
+
+#input_container input {
+	width: 40%;
+	text-align: center;
+	font-size: 16px;
+}
+
+#input_container select {
+	font-size: 16px;
+}
+
+#score_container {
+	position: absolute;
+	text-align: center;
+	width: 100%;
+	top: 5%;
+	font-family: "Electrolize", Helvetica, sans-serif;
+	font-size: 48px;
+}
+</style>
+</head>
+<body>
+	<div id="canvas_container">
+		
+	</div>
+	<div id="score_container">
+		
+	</div>
+	<div id="audio_container">
+		
+	</div>
+	<div id="input_container">
+		<h1 style="font-size: 64px; font-weight: bold;">Swivvel</h1>
+		<br />
+		Enter an audio file URL:
+		<br />
+		<input type="text" id="afurl" value="http://localhost/DL/Ellie Goulding - Burn.mp3" spellcheck="false" />
+		<br />
+		Difficulty:
+		<select id="sel_diff">
+			<option value="8">Very Easy</option>
+			<option value="4">Easy</option>
+			<option value="2" selected>Medium</option>
+			<option value="1">Hard</option>
+		</select>
+		Openings:
+		<select id="sel_open">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+			<option value="8">8</option>
+			<option value="9" selected>9</option>
+			<option value="10">10</option>
+			<option value="11">11</option>
+			<option value="12">12</option>
+			<option value="13">13</option>
+			<option value="14">14</option>
+			<option value="15">15</option>
+			<option value="16">16</option>
+			<option value="17">17</option>
+		</select>
+		<button id="playb">Play!</button>
+		<br /><br /><br />
+		Use your mouse to swivel around the waves. Press SPACE to pause.
+	</div>
+</body>
+</html>

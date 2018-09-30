@@ -1,0 +1,51 @@
+<html>
+    <head>
+        <title>IMU Demo - Orientation</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script type="text/javascript">
+//
+window.addEventListener("load", function() {
+    var out = document.getElementById("output");
+    var ouu = document.getElementById("ouuput");
+    
+    function pad(f) {
+        while (f.length < 8) {
+            f = " " + f;
+        }
+        return f;
+    }
+    
+    window.addEventListener("deviceorientation", function(event) {
+        var dbt = pad(event.absolute);
+        var dba = pad(event.alpha.toFixed(3));
+        var dbb = pad(event.beta.toFixed(3));
+        var dbc = pad(event.gamma.toFixed(3));
+        
+        out.innerHTML = dbt + "<br />" + dba + "<br />" + dbb + "<br />" + dbc;
+    }, true);
+
+    window.addEventListener("devicemotion", function(event) {
+        var dmx = pad(event.acceleration.x.toFixed(3));
+        var dmy = pad(event.acceleration.y.toFixed(3));
+        var dmz = pad(event.acceleration.z.toFixed(3));
+
+        ouu.innerHTML = dmx + "<br />" + dmy + "<br />" + dmz;
+    });
+});
+//
+        </script>
+        <style type="text/css">
+/**/
+div {
+    font-size: 3em;
+    font-family: 'Lucida Console', monospace;
+    white-space: pre;
+}
+/**/
+        </style>
+    </head>
+    <body>
+        <div id="output"></div>
+        <div id="ouuput"></div>
+    </body>
+</html>

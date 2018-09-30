@@ -1,0 +1,64 @@
+- name: "Physically Based Hair"
+  url: "https://youtu.be/YHBZs1E0s28"
+  thumbnail: "Hair/thumb.jpg"
+  description: "Physically based simulation of hair based on \"Fast Simulation of Inextensible Hair and Fur\" (M‌uller 2012). Rendered in Blender using Pixar's Renderman."
+
+- name: "Matrix Multiplication"
+  url: "https://github.com/ScottSWu/matmul-/blob/master/Group%204%20Final%20Report.pdf"
+  thumbnail: "Matmul/thumb.png"
+  description: "Optimizing single threaded matrix multiply using compiler flags SIMD instructions and cache locality."
+
+- name: "Reflections"
+  url: "Reflections/index.html"
+  thumbnail: "Reflections/thumb.jpg"
+  description: "True realtime reflections using oblique plane clipping and multipass rendering."
+
+- name: "Switchboard"
+  url: "Switchboard/index.html"
+  thumbnail: "Switchboard/thumb.jpg"
+  description: "A realtime multiuser sandbox application for playing any board or card game."
+
+- name: "Web osu! Replay Viewer"
+  url: "wosu/index.html"
+  thumbnail: "wosu/thumb.jpg"
+  description: "A web based replay viewer for the game <a href=\"http://osu.ppy.sh/\">osu!</a>."
+
+- name: "Pendulum Wave"
+  url: "Pendulum/index.html"
+  thumbnail: "Pendulum/thumb.jpg"
+  description: "A 3D simulation of patterns created from a series of pendulums of different lengths."
+
+- name: "Inversions"
+  url: "Inversions/index.html"
+  thumbnail: "Inversions/thumb.jpg"
+  description: "A grapher for polar inversions."
+
+- name: "Live Video Processing using Canvas"
+  url: "VideoProcessing/index.html"
+  thumbnail: "VideoProcessing/thumb.jpg"
+  description: "A demonstration of live video processing using only HTML5 Canvas and Javascript. The video used in this demonstration is a trailer for the short film <a href=\"http://www.sintel.org/\">Sintel</a>."
+
+- name: "Mandelbrot Fractal"
+  url: "Mandelbrot/index.html"
+  thumbnail: "Mandelbrot/thumb.jpg"
+  description: "An interactive Java Applet for viewing the Mandelbrot fractal in color."
+
+- name: "Terrain Map"
+  url: "TerrainMap/index.html"
+  thumbnail: "TerrainMap/thumb.jpg"
+  description: "Randomly generated 3D terrain map using the midpoint displacement algorithm."
+
+- name: "Spring"
+  url: "Spring/index.html"
+  thumbnail: "Spring/thumb.jpg"
+  description: "A 3D animation of the cherry blossom tree."
+
+- name: "Sudoku Solver"
+  url: "SudokuSolver/index.html"
+  thumbnail: "SudokuSolver/thumb.jpg"
+  description: "A simple Sudoku puzzle solver for unique puzzle solutions. Some of the harder Sudoku puzzles actually requires some guessing. After solving as much as possible guesses can be made to either further the solution or run into an error."
+
+- name: "Squares"
+  url: "Squares/index.html"
+  thumbnail: "Squares/thumb.jpg"
+  description: "Just a bunch of squares."

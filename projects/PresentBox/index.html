@@ -1,0 +1,261 @@
+<html>
+<head>
+<!--
+Scott Wu
+47be1f67c35cb3bd7fdaae284c21c69a
+-->
+<title>Giftmas</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8;" />
+<script type="text/javascript" src="/lib/three.min.js"></script>
+<script type="text/javascript" src="/lib/webgl-utils.js"></script>
+<style type="text/css">
+body {
+	background-color: #FFFFFF;
+	background-position: left top;
+	overflow: hidden;
+	padding: 0px;
+}
+
+#wrap {
+	width: 100%;
+	height: 100%;
+}
+
+#container {
+	width: 100%;
+	height: 100%;
+}
+</style>
+<script type="text/javascript">
+var ctx,renderer,jsl,jslLoaded,keys,mouse;
+var scene,camera,raycast,focus;
+var models,textures,lights;
+var debuglight;
+var webgl = window.WebGLRenderingContext;
+
+function init() {
+	keys = new Array(256);
+	for (var i=0; i<keys.length; i++) keys[i] = false;
+	mouse = [0,0,0,0,0];
+	setEvents(window);
+	
+	ctx = document.getElementById("container");
+	
+	if (webgl) renderer = new THREE.WebGLRenderer(); else renderer = new THREE.CanvasRenderer();
+	renderer.setSize(ctx.offsetWidth,ctx.offsetHeight);
+	renderer.setClearColor(0xFFFFFF,1);
+	ctx.appendChild(renderer.domElement);
+	
+	scene = new THREE.Scene();
+	camera = new THREE.PerspectiveCamera(60,ctx.offsetWidth/ctx.offsetHeight,0.1,64);
+	raycast = new THREE.Raycaster(new THREE.Vector3(10,0,0),new THREE.Vector3(0,0,0),0.1,64);
+	focus = new THREE.Vector3(0,0,0);
+	camera.lookAt(focus);
+	camx = 1.2;
+	camy = -0.4;
+	
+	var power = 0xE0E0E0;
+	lights = new Array(8);
+	lights[0] = new THREE.PointLight(power,1); lights[0].position.set( 3, 3, 3);
+	lights[1] = new THREE.PointLight(power,1); lights[1].position.set(-3, 3, 3);
+	lights[2] = new THREE.PointLight(power,1); lights[2].position.set( 3,-3, 3);
+	lights[3] = new THREE.PointLight(power,1); lights[3].position.set(-3,-3, 3);
+	lights[4] = new THREE.PointLight(power,1); lights[4].position.set( 0, 0,-3);
+	
+	debuglight = new THREE.AmbientLight(0x202020);
+	
+	loadResources();
+	
+}
+
+function loadResources() {
+	models = {};
+	if (webgl) {
+		textures = {
+			weave : THREE.ImageUtils.loadTexture("weave.png"),
+			varic : THREE.ImageUtils.loadTexture("varicose.png")
+		};
+	}
+	else {
+		textures = {
+			weave : null,
+			varic : null
+		};
+	}
+	
+	var jsl = new THREE.JSONLoader(false);
+	jsl.load( "G_box.js" , function(geometry) { models.box = new THREE.Mesh(geometry,new THREE.MeshPhongMaterial({ color : 0xFFFFFF , ambient : 0xFFFFFF , map : textures.weave })); loadFinish(); } );
+	jsl.load( "G_boxr.js", function(geometry) { models.box_ribbon = new THREE.Mesh(geometry,new THREE.MeshPhongMaterial({ color : 0xFFFFFF , ambient : 0xFFFFFF })); loadFinish(); } );
+	jsl.load( "G_top.js" , function(geometry) { models.top = new THREE.Mesh(geometry,new THREE.MeshPhongMaterial({ color : 0xFFFFFF , ambient : 0xFFFFFF , map : textures.varic })); loadFinish(); } );
+	jsl.load( "G_topr.js", function(geometry) { models.top_ribbon = new THREE.Mesh(geometry,new THREE.MeshPhongMaterial({ color : 0xFFFFFF , ambient : 0xFFFFFF })); loadFinish(); } );
+}
+
+var loaded = 0;
+function loadFinish() {
+	loaded++;
+	if (loaded<4) return;
+	
+	models.outergift = new THREE.Object3D();
+	models.outergift.box = new THREE.Mesh(models.box.geometry.clone(),new THREE.MeshPhongMaterial({ color : 0xC04000 , ambient : 0xFFFFFF , map : textures.weave }));;
+	models.outergift.box_ribbon = new THREE.Mesh(models.box_ribbon.geometry.clone(),new THREE.MeshPhongMaterial({ color : 0xFFD700 , ambient : 0xFFFFFF }));
+	models.outergift.box.add(models.outergift.box_ribbon);
+	models.outergift.add(models.outergift.box);
+	models.outergift.top = new THREE.Mesh(models.top.geometry.clone(),new THREE.MeshPhongMaterial({ color : 0xC04000 , ambient : 0xFFFFFF , map : textures.varic }));
+	models.outergift.top_ribbon = new THREE.Mesh(models.top_ribbon.geometry.clone(),new THREE.MeshPhongMaterial({ color : 0xFFD700 , ambient : 0xFFFFFF }));
+	models.outergift.top.add(models.outergift.top_ribbon);
+	models.outergift.add(models.outergift.top);
+	
+	models.innergift = new THREE.Object3D();
+	models.innergift.box = new THREE.Mesh(models.box.geometry.clone(),new THREE.MeshPhongMaterial({ color : 0x0040FF , ambient : 0xFFFFFF , map : textures.weave }));
+	models.innergift.box_ribbon = new THREE.Mesh(models.box_ribbon.geometry.clone(),new THREE.MeshPhongMaterial({ color : 0xFF0000 , ambient : 0xFFFFFF }));
+	models.innergift.box.add(models.innergift.box_ribbon);
+	models.innergift.add(models.innergift.box);
+	models.innergift.top = new THREE.Mesh(models.top.geometry.clone(),new THREE.MeshPhongMaterial({ color : 0x0040FF , ambient : 0xFFFFFF , map : textures.varic }));
+	models.innergift.top_ribbon = new THREE.Mesh(models.top_ribbon.geometry.clone(),new THREE.MeshPhongMaterial({ color : 0xFF0000 , ambient : 0xFFFFFF }));
+	models.innergift.top.add(models.innergift.top_ribbon);
+	models.innergift.add(models.innergift.top);
+	
+	models.innergift.top_ribbon.scale.set(1,0.01,1);
+	models.innergift.scale.set(0.8,0.8,0.8);
+	
+	models.animation = 0;
+	models.sequence = 0;
+	scene.add(models.outergift);
+	scene.add(models.innergift);
+	for (var i=0; i<lights.length; i++) scene.add(lights[i]);
+	scene.add(debuglight);
+	scene.add(camera);
+	
+	frame();
+}
+
+function setEvents(element) {
+	window.addEventListener("keydown",function(event) {
+		keys[event.which] = true;
+	},false);
+	window.addEventListener("keyup",function(event) {
+		keys[event.which] = false;
+	},false);
+	window.addEventListener("mousemove",function(event) {
+		mouse[0] = event.clientX - ctx.offsetLeft;
+		mouse[1] = event.clientY - ctx.offsetTop;
+	},false);
+	window.addEventListener("mousedown",function(event) {
+		mouse[0] = event.clientX - ctx.offsetLeft;
+		mouse[1] = event.clientY - ctx.offsetTop;
+		mouse[2] = event.clientX - ctx.offsetLeft;
+		mouse[3] = event.clientY - ctx.offsetTop;
+		mouse[4] = 1;
+		camx2 = camx;
+		camy2 = camy;
+	},false);
+	window.addEventListener("dblclick",function(event) {
+		mouse[0] = event.clientX - ctx.offsetLeft;
+		mouse[1] = event.clientY - ctx.offsetTop;
+		if (models.sequence==0) models.sequence = 1;
+	},false);
+	window.addEventListener("mouseup",function(event) {
+		mouse[0] = event.clientX - ctx.offsetLeft;
+		mouse[1] = event.clientY - ctx.offsetTop;
+		mouse[4] = 0;
+	},false);
+	window.addEventListener("focus",function(event) {
+		mouse[4] = 0;
+	},false);
+	window.addEventListener("blur",function(event) {
+		mouse[4] = 0;
+	},false);
+}
+
+var camx = 0,camy = 0,camx2 = 0,camy2 = 0; // ud,lr
+var dir = new THREE.Vector3(0,0,0);
+
+var ctime = 0;
+var dt = 0.1;
+function frame() {
+	requestAnimFrame(frame);
+	
+	if (mouse[4]==1) {
+		var shiftx = mouse[2]-mouse[0];
+		var shifty = mouse[3]-mouse[1];
+		camx = camx2 - shiftx/ctx.offsetWidth*Math.PI*4;
+		camy = camy2 + shifty/ctx.offsetHeight*Math.PI;
+	}
+	
+	if (camy>Math.PI/2) camy = Math.PI/2-0.01;
+	if (camy<-Math.PI/2) camy = -Math.PI/2+0.01;
+	
+	models.outergift.rotation.set(0,camx,camy);
+	models.innergift.rotation.set(0,camx,camy);
+	//camera.position.set(r*Math.cos(camy)*Math.cos(camx),r*Math.sin(camy),r*Math.cos(camy)*Math.sin(camx));
+	camera.position.set(0,0,-6);
+	camera.lookAt(focus);
+	
+	renderer.render(scene,camera);
+	
+	models.animation++;
+	if (models.sequence==0) {
+		models.animation = 0;
+	}
+	else if (models.sequence==1) {
+		models.outergift.top.position.y = models.animation/10;
+		if (models.animation<=10) {
+			models.innergift.top_ribbon.scale.set(1,models.animation/10,1);
+		}
+		if (models.animation>40) {
+			models.animation = 0;
+			models.sequence++;
+		}
+	}
+	else if (models.sequence==2) {
+		models.outergift.top.position.y = 4 + models.animation/10;
+		models.outergift.box.position.y = -models.animation/10;
+		if (models.animation>40) {
+			models.animation = 0;
+			models.sequence++;
+		}
+	}
+	else if (models.sequence==3) {
+		models.outergift.box.position.y = -4-models.animation/10;
+		var s = models.animation/150 + 0.8;
+		models.innergift.scale.set(s,s,s);
+		
+		if (models.animation>30) {
+			models.animation = 0;
+			models.sequence++;
+			scene.remove(models.outergift);
+			models.innergift.scale.set(1,1,1);
+		}
+	}
+	else if (models.sequence==4) {
+		models.outergift = models.innergift;
+		
+		var cb = ~~(Math.random()*256)*0x10000 + ~~(Math.random()*256)*0x100 + ~~(Math.random()*256);
+		var cr = ~~(Math.random()*256)*0x10000 + ~~(Math.random()*256)*0x100 + ~~(Math.random()*256);
+		models.innergift = new THREE.Object3D();
+		models.innergift.box = new THREE.Mesh(models.box.geometry.clone(),new THREE.MeshPhongMaterial({ color : cb , ambient : 0xFFFFFF , map : textures.weave }));
+		models.innergift.box_ribbon = new THREE.Mesh(models.box_ribbon.geometry.clone(),new THREE.MeshPhongMaterial({ color : cr , ambient : 0xFFFFFF }));
+		models.innergift.box.add(models.innergift.box_ribbon);
+		models.innergift.add(models.innergift.box);
+		models.innergift.top = new THREE.Mesh(models.top.geometry.clone(),new THREE.MeshPhongMaterial({ color : cb , ambient : 0xFFFFFF , map : textures.varic }));
+		models.innergift.top_ribbon = new THREE.Mesh(models.top_ribbon.geometry.clone(),new THREE.MeshPhongMaterial({ color : cr , ambient : 0xFFFFFF }));
+		models.innergift.top.add(models.innergift.top_ribbon);
+		models.innergift.add(models.innergift.top);
+		
+		models.innergift.top_ribbon.scale.set(1,0.01,1);
+		models.innergift.scale.set(0.8,0.8,0.8);
+		
+		scene.add(models.innergift);
+		
+		models.animation = 0;
+		models.sequence = 0;
+	}
+}
+</script>
+</head>
+<body onload="javascript: init(); void 0;">
+<div id="wrap">
+	<div id="container"></div>
+</div>
+</body>
+</html>

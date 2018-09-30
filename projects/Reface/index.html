@@ -1,0 +1,184 @@
+<html>
+<head>
+    <title>Facial Recognition</title>
+    <!-- <script type="text/javascript" src="lib/numeric/numeric.min.js"></script> -->
+    <!-- <script type="text/javascript" src="lib/jsfeat/jsfeat.min.js"></script> -->
+    <script type="text/javascript" src="lib/clmtrackr.min.js"></script>
+    <script type="text/javascript" src="lib/models/model_pca_20_svm.js"></script>
+    <script type="text/javascript">
+//
+
+navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+window.URL = window.URL || window.webkitURL || window.mozURL || window.msURL;
+
+var imw = 1280;
+var imh = 720;
+var velem, celem, relem;
+var ctx, ctrack;
+window.addEventListener("load", function() {
+    navigator.getUserMedia(
+        {
+            video: {
+                mandatory: {
+                    minWidth: imw,
+                    minHeight: imh
+                }
+            }
+        }, function(stream) {
+            velem = document.getElementById("wcin");
+            velem.width = imw;
+            velem.height = imh;
+            velem.style.width = (imw / 2) + "px";
+            velem.style.height = (imh / 2) + "px";
+            velem.src = window.URL.createObjectURL(stream);
+            velem.play();
+            
+            celem = document.getElementById("track");
+            celem.width = imw;
+            celem.height = imh;
+            celem.style.width = (imw / 2) + "px";
+            celem.style.height = (imh / 2) + "px";
+            ctx = celem.getContext("2d");
+            
+            relem = document.getElementById("reface");
+            relem.width = imw;
+            relem.height = imh;
+            relem.style.width = (imw / 2) + "px";
+            relem.style.height = (imh / 2) + "px";
+            
+            ctrack = new clm.tracker({ useWebGL : true });
+            ctrack.init(pModel);
+            ctrack.start(velem);
+            
+            frame();
+            
+        }, function() {
+            console.log("Failed to get user media");
+        }
+    );
+});
+
+function frame() {
+    requestAnimationFrame(frame);
+    
+    // Draw overlay
+    ctx.clearRect(0, 0, imw, imh);
+    var face = ctrack.getCurrentPosition();
+    if (face) {
+        ctrack.draw(celem);
+    }
+    
+    // Draw new face
+    var rf = document.getElementById("reface").getContext("2d");
+    rf.clearRect(0, 0, imw, imh);
+    {
+        var dist = function(p0, p1) {
+            var d0 = (p0[0] - p1[0]);
+            var d1 = (p0[1] - p1[1]);
+            return Math.sqrt(d0 * d0 + d1 * d1);
+        };
+        
+        // Background
+        var cx = 0.5 * (face[1][0] + face[13][0]);
+        var cy = 0.5 * (face[1][1] + face[13][1]);
+        var rx = dist([cx, cy], face[1]);
+        var ry = dist([cx, cy], face[7]);
+        
+        rf.fillStyle = "red";
+        rf.beginPath();
+        rf.ellipse(cx, cy, rx, ry, 0, 0, 2 * Math.PI);
+        rf.fill();
+        
+        // Eyes and pupils
+        cx = 0.5 * (face[23][0] + face[25][0]);
+        cy = 0.5 * (face[23][1] + face[25][1]);
+        rx = dist([cx, cy], face[23]);
+        ry = dist([cx, cy], face[24]);
+        
+        rf.fillStyle = "white";
+        rf.beginPath();
+        rf.ellipse(cx, cy, rx, ry, 0, 0, 2 * Math.PI);
+        rf.fill();
+        
+        rf.fillStyle = "black";
+        rf.beginPath();
+        rf.arc(face[27][0], face[27][1], ry * 0.5, 0, 2 * Math.PI);
+        rf.fill();
+        
+        cx = 0.5 * (face[30][0] + face[28][0]);
+        cy = 0.5 * (face[30][1] + face[28][1]);
+        rx = dist([cx, cy], face[30]);
+        ry = dist([cx, cy], face[29]);
+        
+        rf.fillStyle = "white";
+        rf.beginPath();
+        rf.ellipse(cx, cy, rx, ry, 0, 0, 2 * Math.PI);
+        rf.fill();
+        
+        rf.fillStyle = "black";
+        rf.beginPath();
+        rf.arc(face[32][0], face[32][1], ry * 0.5, 0, 2 * Math.PI);
+        rf.fill();
+        
+        // Eyebrows
+        rf.strokeStyle = "yellow";
+        rf.lineWidth = 4;
+        rf.beginPath();
+        rf.moveTo.apply(rf, face[19]);
+        rf.bezierCurveTo.apply(rf, [].concat(face[20], face[21], face[22]));
+        rf.moveTo.apply(rf, face[15]);
+        rf.bezierCurveTo.apply(rf, [].concat(face[16], face[17], face[18]));
+        rf.stroke();
+        rf.lineWidth = 1;
+        
+        // Nose
+        rf.fillStyle = "blue";
+        rf.beginPath();
+        rf.moveTo.apply(rf, face[41]);
+        rf.lineTo.apply(rf, face[42]);
+        rf.lineTo.apply(rf, face[43]);
+        rf.lineTo.apply(rf, face[41]);
+        rf.fill();
+        
+        // Mouth
+        rf.fillStyle = "green";
+        rf.beginPath();
+        rf.moveTo.apply(rf, face[44]);
+        rf.lineTo.apply(rf, face[56]);
+        rf.lineTo.apply(rf, face[57]);
+        rf.lineTo.apply(rf, face[58]);
+        rf.lineTo.apply(rf, face[50]);
+        rf.lineTo.apply(rf, face[59]);
+        rf.lineTo.apply(rf, face[60]);
+        rf.lineTo.apply(rf, face[61]);
+        rf.fill();
+    }
+}
+
+//
+    </script>
+    <style type="text/css">
+/**/
+
+body {
+    overflow: hidden;
+}
+
+#wcin {
+}
+
+#track {
+    margin-left: -640px;
+}
+
+#reface {
+    outline: 1px solid black;
+}
+
+/**/
+    </style>
+</head>
+<body>
+    <video id="wcin"></video><canvas id="track"></canvas><canvas id="reface"></canvas>
+</body>
+</html>

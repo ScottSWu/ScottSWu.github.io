@@ -1,0 +1,308 @@
+<html>
+<head>
+<!--
+Scott Wu
+47be1f67c35cb3bd7fdaae284c21c69a
+-->
+<title>Scott Wu ~ Nelder-Mead Simplex Algorithm Demonstration</title>
+<script type="text/javascript">
+var canvas,ctx,hm,grid;
+var func,power;
+function init() {
+	var args = location.search.substring(1).split("&");
+	var eq,key,value,parameters;
+	parameters = {};
+	for (var i=0; i<args.length; i++) {
+		eq = args[i].indexOf("=");
+		if (eq>=0) {
+			key = args[i].substring(0,eq);
+			value = args[i].substring(eq+1);
+			parameters[key] = value;
+		}
+	}
+	
+	func = "rosen";
+	power = 0.35
+	if (parameters["f"]!=undefined) func = parameters["f"];
+	if (parameters["p"]!=undefined) power = parseFloat(parameters["p"]);
+	func = eval(func);
+	
+	canvas = document.getElementById("sc");
+	ctx = canvas.getContext("2d");
+	hm = ctx.createImageData(800,600);
+	grid = new Array(600);
+	var offset,f,c;
+	for (var i=0; i<600; i++) {
+		grid[i] = new Array(800);
+		for (var j=0; j<800; j++) {
+			offset = (i*800 + j)*4;
+			f = func(getX(j),getY(i));
+			grid[i][j] = f;
+			c = col(f);
+			hm.data[offset+0] = c[0];
+			hm.data[offset+1] = c[1];
+			hm.data[offset+2] = c[2];
+			hm.data[offset+3] = 255;
+		}
+	}
+	ctx.putImageData(hm,0,0);
+	
+	createKey();
+}
+
+function getX(j) {
+	return (j-300)/150;
+}
+
+function getY(i) {
+	return (450-i)/150;
+}
+
+function getJ(x) {
+	return x*150+300;
+}
+
+function getI(y) {
+	return 450-y*150;
+}
+
+function rosen(x,y) {
+	//var x = getX(j);
+	//var y = getY(i);
+	var z = (1-x)*(1-x) + 100*(y-x*x)*(y-x*x);
+	return z;
+}
+
+var colors = [
+	[0,0,0],
+	[0,0,1],
+	[0,1,1],
+	[0,1,0],
+	[1,1,0],
+	[1,0,0],
+	[1,0,0],
+	[1,1,1]
+];
+function col(v) {
+	v = v/2000;
+	if (v>1) v = 1;
+	v = Math.pow(v,power);
+	var section = ~~(v*6);
+	var part = v*6-section;
+	var diff = [colors[section+1][0]-colors[section][0],colors[section+1][1]-colors[section][1],colors[section+1][2]-colors[section][2]];
+	var c = [0,0,0];
+	for (var i=0; i<3; i++) {
+		c[i] = ~~((colors[section][i]+diff[i]*part)*255);
+	}
+	return c;
+}
+
+function createKey() {
+	var ktx = ctx;//document.getElementById("key").getContext("2d");
+	var grad = ktx.createLinearGradient(0,30,0,570);
+	for (var i=0; i<=6; i++) {
+		grad.addColorStop(1-i/6.0,"rgb(" + (colors[i][0]*255) + "," + (colors[i][1]*255) + "," + (colors[i][2]*255) + ")");
+	}
+	ktx.fillStyle = grad;
+	ktx.rect(820,30,20,540);
+	ktx.fill();
+	ktx.fillStyle = "#000000";
+	ktx.lineWidth = 1;
+	ktx.font = "normal 16pt calibri";
+	ktx.textBaseline = "middle";
+	ktx.fillText(">2000",850,30);
+	ktx.fillText("1000",850,130);
+	ktx.fillText("500",850,230);
+	ktx.fillText("100",850,380);
+	ktx.fillText("10",850,480);
+	ktx.fillText("0",850,570);
+}
+
+// Actual amoeba stuff
+var selecting = false;
+var simplex = new Array(0);
+var iterations = 0;
+function select() {
+	simplex = new Array(0);
+	iterations = 0;
+	selecting = true;
+}
+
+function canvasClick(event) {
+	if (!selecting) return;
+	var mx = event.clientX - canvas.offsetLeft;
+	var my = event.clientY - canvas.offsetTop;
+	simplex.push([getX(mx),getY(my),mx,my,func(getX(mx),getY(my))]);
+	if (simplex.length>=3) {
+		selecting = false;
+		ctx.lineWidth = 4;
+		ctx.strokeStyle = "#FFFFFF";
+		ctx.fillStyle = "#000000";
+		showSimplex();
+	}
+}
+
+function showSimplex() {
+	ctx.putImageData(hm,0,0);
+	ctx.beginPath();
+	// Triangle
+	ctx.moveTo(simplex[0][2],simplex[0][3]);
+	ctx.lineTo(simplex[1][2],simplex[1][3]);
+	ctx.lineTo(simplex[2][2],simplex[2][3]);
+	ctx.closePath();
+	ctx.stroke();
+	
+	// Points
+	var r = 5;
+	var c;
+	for (var i=0; i<3; i++) {
+		c = col(simplex[i][4]); ctx.fillStyle = "rgb(" + c[0] + "," + c[1] + "," + c[2] + ")";
+		ctx.beginPath(); ctx.arc(simplex[i][2],simplex[i][3],r,0,2*Math.PI); ctx.closePath(); ctx.fill();
+		ctx.beginPath(); ctx.arc(simplex[i][2],simplex[i][3],r,0,2*Math.PI); ctx.closePath(); ctx.stroke();
+	}
+	
+	var out = "Simplex<br />";
+	out += "Iterations: " + iterations + "<br />";
+	out += "( " + round(simplex[0][0]) + " , " + round(simplex[0][1]) + " ) : f = " + round(simplex[0][4]) + "<br />";
+	out += "( " + round(simplex[1][0]) + " , " + round(simplex[1][1]) + " ) : f = " + round(simplex[1][4]) + "<br />";
+	out += "( " + round(simplex[2][0]) + " , " + round(simplex[2][1]) + " ) : f = " + round(simplex[2][4]) + "<br />";
+	document.getElementById("info").innerHTML = out;
+}
+
+function round(x) {
+	return x.toFixed(4);
+}
+
+function step() {
+	// Sort
+	var t;
+	if (simplex[0][4]<simplex[1][4] && simplex[0][4]<simplex[2][4]) {
+		
+	}
+	else if (simplex[1][4]<simplex[0][4] && simplex[1][4]<simplex[2][4]) {
+		t = simplex[1];
+		simplex[1] = simplex[0];
+		simplex[0] = t;
+	}
+	else if (simplex[2][4]<simplex[1][4] && simplex[2][4]<simplex[0][4]) {
+		t = simplex[2];
+		simplex[2] = simplex[0];
+		simplex[0] = t;
+	}
+	if (simplex[2][4]<simplex[1][4]) {
+		t = simplex[2];
+		simplex[2] = simplex[1];
+		simplex[1] = t;
+	}
+	
+	// Center
+	var xc = [
+		(simplex[0][0] + simplex[1][0])/2,
+		(simplex[0][1] + simplex[1][1])/2
+		];
+	
+	// Reflection
+	var xr = [
+		2*xc[0] - simplex[2][0],
+		2*xc[1] - simplex[2][1]
+		];
+	var fxr = func(xr[0],xr[1]);
+	
+	if (fxr<simplex[0][4]) {
+		var xe = [
+			3*xc[0] - 2*simplex[2][0],
+			3*xc[1] - 2*simplex[2][1]
+			];
+		var fxe = func(xe[0],xe[1]);
+		if (fxe<fxr) {
+			console.log("Reflection");
+			simplex[2] = [xe[0],xe[1],getJ(xe[0]),getI(xe[1]),fxe];
+		}
+		else {
+			console.log("Expanded Reflection");
+			simplex[2] = [xr[0],xr[1],getJ(xr[0]),getI(xr[1]),fxr];
+		}
+	}
+	else if (fxr<simplex[1][4]) {
+		console.log("Reflection");
+		simplex[2] = [xr[0],xr[1],getJ(xr[0]),getI(xr[1]),fxr];
+	}
+	else {
+		if (fxr<simplex[2][4]) {
+			var xo = [
+				1.5*xc[0] - 0.5*simplex[2][0],
+				1.5*xc[1] - 0.5*simplex[2][1]
+				];
+			var fxo = func(xo[0],xo[1]);
+			if (fxo<=fxr) {
+				console.log("Contracted Reflection");
+				simplex[2] = [xo[0],xo[1],getJ(xo[0]),getI(xo[1]),fxo];
+			}
+			else {
+				console.log("Shrink");
+				var xs,fxs;
+				xs = [
+					0.5*simplex[0][0] + 0.5*simplex[1][0],
+					0.5*simplex[0][1] + 0.5*simplex[1][1],
+					];
+				fxs = func(xs[0],xs[1]);
+				simplex[1] = [xs[0],xs[1],getJ(xs[0]),getI(xs[1]),fxs];
+				
+				xs = [
+					0.5*simplex[0][0] + 0.5*simplex[2][0],
+					0.5*simplex[0][1] + 0.5*simplex[2][1],
+					];
+				fxs = func(xs[0],xs[1]);
+				simplex[2] = [xs[0],xs[1],getJ(xs[0]),getI(xs[1]),fxs];
+			}
+		}
+		else {
+			var xo = [
+				0.5*xc[0] + 0.5*simplex[2][0],
+				0.5*xc[1] + 0.5*simplex[2][1]
+				];
+			var fxo = func(xo[0],xo[1]);
+			if (fxo<simplex[2][4]) {
+				console.log("Contraction");
+				simplex[2] = [xo[0],xo[1],getJ(xo[0]),getI(xo[1]),fxo];
+			}
+			else {
+				console.log("Shrink");
+				var xs,fxs;
+				xs = [
+					0.5*simplex[0][0] + 0.5*simplex[1][0],
+					0.5*simplex[0][1] + 0.5*simplex[1][1],
+					];
+				fxs = func(xs[0],xs[1]);
+				simplex[1] = [xs[0],xs[1],getJ(xs[0]),getI(xs[1]),fxs];
+				
+				xs = [
+					0.5*simplex[0][0] + 0.5*simplex[2][0],
+					0.5*simplex[0][1] + 0.5*simplex[2][1],
+					];
+				fxs = func(xs[0],xs[1]);
+				simplex[2] = [xs[0],xs[1],getJ(xs[0]),getI(xs[1]),fxs];
+			}
+		}
+	}
+	
+	iterations++;
+	
+	showSimplex();
+}
+</script>
+</head>
+<body onload="javascript: init();">
+<div id="container" style="display: block; width: 960px; margin-left: auto; margin-right: auto; text-align: center;">
+	<h1>Nelder-Mead Simplex Algorithm on the <a href="http://www.wolframalpha.com/input/?i=rosenbrock+function">Rosenbrock Function</a></h1>
+	Click "New Simplex" to begin. Then click three points to define the simplex, and finally "Step" to iterate the algorithm.<br />
+	<canvas id="sc" width="960" height="600" onclick="javascript: canvasClick(event);" style="border: 1px solid black;"></canvas>
+	<!--<canvas id="key" width="100" height="600" style="border: 1px solid white; margin-left: 10px;"></canvas>-->
+	<div id="cont" style="float: left;">
+		<button onclick="javascript: select();">New Simplex</button>
+		<button onclick="javascript: step();">Step</button><br />
+		<span id="info" style="font-family: calibri,Lucida Console, monospace"></span><br />
+	</div>
+</div>
+</body>
+</html>
