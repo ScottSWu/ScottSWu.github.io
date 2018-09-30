@@ -9,7 +9,7 @@ title          : Scott Wu
 title_separator: "-"
 name           : "Scott Wu"
 description    : "This is my site"
-url            : "https://scwu.io"
+url            : "https://blog.scwu.io"
 baseurl        : ""
 repository     : "ScottSWu/scottswu.github.io"
 
