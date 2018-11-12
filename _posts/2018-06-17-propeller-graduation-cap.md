@@ -3,6 +3,7 @@ title: Propeller Graduation Cap
 date: 2018-06-17 00:59:00
 tags:
 - project
+- electronics
 ---
 
 For this year's graduation, I decided to decorate my cap with a little more than a sticker.
