@@ -8,10 +8,20 @@ locale         : "en-US"
 title          : Scott Wu
 title_separator: "-"
 name           : "Scott Wu"
-description    : "This is my site"
-url            : "https://blog.scwu.io"
+logo           : "/assets/images/pineapple_logo.png"
+description    : "Scott Wu's blog"
+url            : "https://scwu.io"
 baseurl        : ""
 repository     : "ScottSWu/scottswu.github.io"
+
+# Site Author
+author:
+  name    : "Scott Wu"
+  avatar  : "/assets/images/avatar8.jpg"
+  bio     : "A pineapple who loves robots and making things."
+  email   : "me@scwu.io"
+  github  : "ScottSWu"
+  linkedin: "scswu"
 
 # File Settings
 encoding: "utf-8"
@@ -81,14 +91,6 @@ exclude:
   - old
   - vendor
   - projects
-
-# Site Author
-author:
-  name    : "Scott Wu"
-  avatar  : "/assets/images/avatar.jpg"
-  email   : "me@scwu.io"
-  github  : "ScottSWu"
-  linkedin: "scswu"
 
 # Defaults
 defaults:
