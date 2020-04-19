@@ -2,7 +2,7 @@
 <html lang="en-us">
 
 <head>
-  <title>Scott Wu - 404 Page not found</title>
+  <title>Scott Wu - Autotagging mp3 Files</title>
 
 
 <meta charset="utf-8">
@@ -109,15 +109,27 @@
 
       <div class="col-12 col-sm-12 col-md-12 col-lg-9 col-xl-9">
         
-  <div class="col-xs-12 col-sm-8 col-md-9 content-column white-background">
-    <div class="row">
-      <div class="col-lg-8">
-        <div class="content-column-content">
-          <h1>Page not found</h1>
-          <p><a href="/">Return to the home page</a>.</p>
-        </div>
-      </div>
-    </div>
+  <div class="w-100">
+    <h2>
+      Autotagging mp3 Files
+    </h2>
+
+    
+    
+    
+    <p>I frequently use <a href="https://rg3.github.io/youtube-dl/">youtube-dl</a> to download mp3s or whole channels.</p>
+<p><code>youtube-dl -f bestaudio --extract-audio --audio-format mp3 &lt;link&gt;</code></p>
+<p>However these mp3s won&rsquo;t come with the right ID3 tags. I usually name the mp3s in a consistent fashion, which should make make tagging straightforward. In python, there&rsquo;s a package called <a href="https://mutagen.readthedocs.io/en/latest/">mutagen</a> which has an easy ID3 editing package.</p>
+<p>Editing tags is as simple as:
+{% highlight python %}
+from mutagen.easyid3 import EasyID3</p>
+<p>file = EasyID3(&ldquo;filename.mp3&rdquo;)
+audio[&ldquo;title&rdquo;] = &ldquo;Title&rdquo;
+audio[&ldquo;artist&rdquo;] = [&ldquo;Artist 1&rdquo;, &ldquo;Artist 2&rdquo;]
+{% endhighlight %}</p>
+<p>Putting it all into a simple script lets me tag them all at once, so audio players have an easier time categorizing and sorting.</p>
+<p><a href="https://github.com/ScottSWu/id3tag.py">https://github.com/ScottSWu/id3tag.py</a></p>
+
   </div>
 
       </div>

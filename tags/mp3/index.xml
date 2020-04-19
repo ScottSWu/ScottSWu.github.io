@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>mp3 on Scott Wu</title>
+    <link>/tags/mp3/</link>
+    <description>Recent content in mp3 on Scott Wu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 21 May 2017 01:07:18 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/mp3/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Windows CLI Music Player</title>
+      <link>/posts/2017-05-21-windows-cli-music-player/</link>
+      <pubDate>Sun, 21 May 2017 01:07:18 +0000</pubDate>
+      
+      <guid>/posts/2017-05-21-windows-cli-music-player/</guid>
+      <description>A dead simple Windows CLI interface in Python. Plays and shuffles a folder of media files.
+https://github.com/ScottSWu/shuffle.py</description>
+    </item>
+    
+    <item>
+      <title>Autotagging mp3 Files</title>
+      <link>/posts/2017-05-20-autotagging-mp3-files/</link>
+      <pubDate>Sat, 20 May 2017 20:35:10 +0000</pubDate>
+      
+      <guid>/posts/2017-05-20-autotagging-mp3-files/</guid>
+      <description>I frequently use youtube-dl to download mp3s or whole channels.
+youtube-dl -f bestaudio --extract-audio --audio-format mp3 &amp;lt;link&amp;gt;
+However these mp3s won&amp;rsquo;t come with the right ID3 tags. I usually name the mp3s in a consistent fashion, which should make make tagging straightforward. In python, there&amp;rsquo;s a package called mutagen which has an easy ID3 editing package.
+Editing tags is as simple as: {% highlight python %} from mutagen.easyid3 import EasyID3</description>
+    </item>
+    
+  </channel>
+</rss>

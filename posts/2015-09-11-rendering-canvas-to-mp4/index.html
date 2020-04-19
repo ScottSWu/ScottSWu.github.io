@@ -2,7 +2,7 @@
 <html lang="en-us">
 
 <head>
-  <title>Scott Wu - 404 Page not found</title>
+  <title>Scott Wu - Rendering Canvas to mp4 using NodeJS</title>
 
 
 <meta charset="utf-8">
@@ -109,15 +109,42 @@
 
       <div class="col-12 col-sm-12 col-md-12 col-lg-9 col-xl-9">
         
-  <div class="col-xs-12 col-sm-8 col-md-9 content-column white-background">
-    <div class="row">
-      <div class="col-lg-8">
-        <div class="content-column-content">
-          <h1>Page not found</h1>
-          <p><a href="/">Return to the home page</a>.</p>
-        </div>
-      </div>
-    </div>
+  <div class="w-100">
+    <h2>
+      Rendering Canvas to mp4 using NodeJS
+    </h2>
+
+    
+    
+    
+    <p>I recently put together a &ldquo;it just works&rdquo; version of WOsu and WOsu-record.</p>
+<p><a href="https://github.com/ScottSWu/wosu">WOsu</a> is a JavaScript library for the rhythm game <a href="https://osu.ppy.sh">osu!</a>. Although designed to use any sort of rendering (Canvas, CSS), its working implementation primarily relies on Three.js and WebGL.</p>
+<p>Currently the primary use of WOsu is the <a href="http://sc-wu.com/p/wosu/">Web osu! Replay Viewer</a>, which allows users to view replays straight on the web.</p>
+<p><a href="https://github.com/ScottSWu/wosu-record">WOsu-record</a> is an <a href="http://electron.atom.io/">Electron</a> application that uses WOsu, ffmpeg and nodejs to record replays to a video file.</p>
+<p>Currently the idea is to use the ffmpeg image2pipe feature to write frames through stdin.</p>
+<p>First spawn a child ffmpeg process.
+{% highlight javascript %}
+var recorder = child_process.spawn(&ldquo;ffmpeg.exe&rdquo;, [
+&ldquo;-y&rdquo;, &ldquo;-f&rdquo;, &ldquo;image2pipe&rdquo;,
+&ldquo;-vcodec&rdquo;, &ldquo;png&rdquo;, &ldquo;-r&rdquo;, &ldquo;60&rdquo;,
+&ldquo;-i&rdquo;, &ldquo;-&quot;, &ldquo;-vcodec&rdquo;, &ldquo;h264&rdquo;,
+&ldquo;-r&rdquo;, &ldquo;60&rdquo;, &ldquo;output.mp4&rdquo;
+]);
+{% endhighlight %}</p>
+<p>Next, for each frame grab the canvas data and convert to a binary string.
+{% highlight javascript %}
+var url = canvas.toDataURL();
+var data = atob( url.substring(url.indexOf(&ldquo;base64&rdquo;) + 7) );
+{% endhighlight %}</p>
+<p>Finally, we can write the data to stdin.
+{% highlight javascript %}
+recorder.stdin.write(data, &ldquo;binary&rdquo;);
+{% endhighlight %}</p>
+<p>When finished, we can close the stream.
+{% highlight javascript %}
+recorder.stdin.end();
+{% endhighlight %}</p>
+
   </div>
 
       </div>

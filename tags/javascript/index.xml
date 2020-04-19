@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>javascript on Scott Wu</title>
+    <link>/tags/javascript/</link>
+    <description>Recent content in javascript on Scott Wu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 15 Mar 2016 19:31:56 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/javascript/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>IMU</title>
+      <link>/posts/2016-03-15-imu/</link>
+      <pubDate>Tue, 15 Mar 2016 19:31:56 +0000</pubDate>
+      
+      <guid>/posts/2016-03-15-imu/</guid>
+      <description>I was looking for an easy way to access an IMU for some quick tests. I settled on a smartphone sensor because all the sensor fusion / calibration software is built in. Furthermore, the device motion and device orientation events available in the Web API make it easy to grab the data, send it to a computer through websockets and then pipe it into any application.
+Device Orientation: {% highlight javascript %} window.</description>
+    </item>
+    
+    <item>
+      <title>Rendering Canvas to mp4 using NodeJS</title>
+      <link>/posts/2015-09-11-rendering-canvas-to-mp4/</link>
+      <pubDate>Fri, 11 Sep 2015 18:42:55 +0000</pubDate>
+      
+      <guid>/posts/2015-09-11-rendering-canvas-to-mp4/</guid>
+      <description>I recently put together a &amp;ldquo;it just works&amp;rdquo; version of WOsu and WOsu-record.
+WOsu is a JavaScript library for the rhythm game osu!. Although designed to use any sort of rendering (Canvas, CSS), its working implementation primarily relies on Three.js and WebGL.
+Currently the primary use of WOsu is the Web osu! Replay Viewer, which allows users to view replays straight on the web.
+WOsu-record is an Electron application that uses WOsu, ffmpeg and nodejs to record replays to a video file.</description>
+    </item>
+    
+  </channel>
+</rss>

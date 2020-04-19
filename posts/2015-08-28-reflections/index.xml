@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Reflections on Scott Wu</title>
+    <link>/posts/2015-08-28-reflections/</link>
+    <description>Recent content in Reflections on Scott Wu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 28 Aug 2015 05:20:41 +0000</lastBuildDate>
+    
+	<atom:link href="/posts/2015-08-28-reflections/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+  </channel>
+</rss>

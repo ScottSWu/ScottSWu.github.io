@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>3d-printing on Scott Wu</title>
+    <link>/tags/3d-printing/</link>
+    <description>Recent content in 3d-printing on Scott Wu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 04 Feb 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/3d-printing/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Clocks</title>
+      <link>/posts/2020-02-04-clocks/</link>
+      <pubDate>Tue, 04 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/2020-02-04-clocks/</guid>
+      <description>By the time I noticed, it was too late from r/3Dprinting My finished clock and cursed clock from r/3Dprinting  </description>
+    </item>
+    
+    <item>
+      <title>Power Outlet Sink</title>
+      <link>/posts/2020-01-15-power-outlet-sink/</link>
+      <pubDate>Wed, 15 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/2020-01-15-power-outlet-sink/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Princess Mononoke Puzzle</title>
+      <link>/posts/2018-12-02-princess-mononoke-puzzle/</link>
+      <pubDate>Sun, 02 Dec 2018 19:41:00 +0000</pubDate>
+      
+      <guid>/posts/2018-12-02-princess-mononoke-puzzle/</guid>
+      <description>I finished a 1000 piece Princess Mononoke puzzle purchased from Japan. After applying the puzzle glue and sticking it onto a poster board, I needed to mount it on my wall.
+{% include figure image_path=&amp;quot;princess_mononoke_puzzle_finished.jpg&amp;rdquo; %}
+Not wanting a full frame, I instead printed some hooks that would hold the poster board up from the top and bottom. I attached the hooks to my wall using command strips.
+{% include figure image_path=&amp;quot;princess_mononoke_puzzle_hooks.</description>
+    </item>
+    
+    <item>
+      <title>Propeller Graduation Cap</title>
+      <link>/posts/2018-06-17-propeller-graduation-cap/</link>
+      <pubDate>Sun, 17 Jun 2018 00:59:00 +0000</pubDate>
+      
+      <guid>/posts/2018-06-17-propeller-graduation-cap/</guid>
+      <description>For this year&amp;rsquo;s graduation, I decided to decorate my cap with a little more than a sticker.
+{% include figure image_path=&amp;quot;graduation_cap.jpg&amp;rdquo; %}
+Motor The first step into planning was deciding what motor to use. I wanted the electronics to be as simple as possible.
+ Cheap DC motors (that were available) were difficult to mount onto the cap I didn&amp;rsquo;t want a brushless quadcopter motor chopping off fingers Stepper motors were too heavy and needed an extra driver board  I ended up removing the blades on a PC cooling fan.</description>
+    </item>
+    
+  </channel>
+</rss>

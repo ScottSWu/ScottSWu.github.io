@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Scott Wu</title>
+    <link>/tags/</link>
+    <description>Recent content in Tags on Scott Wu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 04 Feb 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>3d-printing</title>
+      <link>/tags/3d-printing/</link>
+      <pubDate>Tue, 04 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/3d-printing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>instagram</title>
+      <link>/tags/instagram/</link>
+      <pubDate>Tue, 04 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/instagram/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>project</title>
+      <link>/tags/project/</link>
+      <pubDate>Tue, 04 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/project/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>pineapple</title>
+      <link>/tags/pineapple/</link>
+      <pubDate>Sat, 27 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/pineapple/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>3dprinting</title>
+      <link>/tags/3dprinting/</link>
+      <pubDate>Fri, 10 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/3dprinting/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>raspberry-pi</title>
+      <link>/tags/raspberry-pi/</link>
+      <pubDate>Sat, 23 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/raspberry-pi/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>electronics</title>
+      <link>/tags/electronics/</link>
+      <pubDate>Sun, 30 Sep 2018 00:00:07 +0000</pubDate>
+      
+      <guid>/tags/electronics/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>life</title>
+      <link>/tags/life/</link>
+      <pubDate>Sat, 02 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/life/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>mp3</title>
+      <link>/tags/mp3/</link>
+      <pubDate>Sun, 21 May 2017 01:07:18 +0000</pubDate>
+      
+      <guid>/tags/mp3/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>python</title>
+      <link>/tags/python/</link>
+      <pubDate>Sun, 21 May 2017 01:07:18 +0000</pubDate>
+      
+      <guid>/tags/python/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>youtube-dl</title>
+      <link>/tags/youtube-dl/</link>
+      <pubDate>Sat, 20 May 2017 20:35:10 +0000</pubDate>
+      
+      <guid>/tags/youtube-dl/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>eye-tracking</title>
+      <link>/tags/eye-tracking/</link>
+      <pubDate>Sat, 20 May 2017 08:02:23 +0000</pubDate>
+      
+      <guid>/tags/eye-tracking/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>osu!</title>
+      <link>/tags/osu/</link>
+      <pubDate>Sat, 20 May 2017 08:02:23 +0000</pubDate>
+      
+      <guid>/tags/osu/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>android</title>
+      <link>/tags/android/</link>
+      <pubDate>Tue, 15 Mar 2016 19:31:56 +0000</pubDate>
+      
+      <guid>/tags/android/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>javascript</title>
+      <link>/tags/javascript/</link>
+      <pubDate>Tue, 15 Mar 2016 19:31:56 +0000</pubDate>
+      
+      <guid>/tags/javascript/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>graphics</title>
+      <link>/tags/graphics/</link>
+      <pubDate>Fri, 11 Sep 2015 18:42:55 +0000</pubDate>
+      
+      <guid>/tags/graphics/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>opengl</title>
+      <link>/tags/opengl/</link>
+      <pubDate>Fri, 11 Sep 2015 18:42:55 +0000</pubDate>
+      
+      <guid>/tags/opengl/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

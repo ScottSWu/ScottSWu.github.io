@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>opengl on Scott Wu</title>
+    <link>/tags/opengl/</link>
+    <description>Recent content in opengl on Scott Wu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 11 Sep 2015 18:42:55 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/opengl/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Rendering Canvas to mp4 using NodeJS</title>
+      <link>/posts/2015-09-11-rendering-canvas-to-mp4/</link>
+      <pubDate>Fri, 11 Sep 2015 18:42:55 +0000</pubDate>
+      
+      <guid>/posts/2015-09-11-rendering-canvas-to-mp4/</guid>
+      <description>I recently put together a &amp;ldquo;it just works&amp;rdquo; version of WOsu and WOsu-record.
+WOsu is a JavaScript library for the rhythm game osu!. Although designed to use any sort of rendering (Canvas, CSS), its working implementation primarily relies on Three.js and WebGL.
+Currently the primary use of WOsu is the Web osu! Replay Viewer, which allows users to view replays straight on the web.
+WOsu-record is an Electron application that uses WOsu, ffmpeg and nodejs to record replays to a video file.</description>
+    </item>
+    
+    <item>
+      <title>Reflections</title>
+      <link>/posts/2015-08-28-reflections/</link>
+      <pubDate>Fri, 28 Aug 2015 05:20:41 +0000</pubDate>
+      
+      <guid>/posts/2015-08-28-reflections/</guid>
+      <description>Following up on the Reflections demo.
+Reflection and refraction using environment maps are a simple way to make cool looking materials. However, environment mapping is limited to far away, static scenes. I was looking to render reflections in a dynamic scene.
+I recall that certain games compute reflections or indirect lighting by sampling the environment at regular position intervals. Reflected rays would use / interpolate nearby samples to compute the reflected color.</description>
+    </item>
+    
+  </channel>
+</rss>
