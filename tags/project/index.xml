@@ -6,10 +6,19 @@
     <description>Recent content in project on Scott Wu</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 04 Feb 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 25 Feb 2020 16:21:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/project/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Magnetic Quarto Board</title>
+      <link>/posts/2020-04-25-magnetic-quarto/</link>
+      <pubDate>Tue, 25 Feb 2020 16:21:00 +0000</pubDate>
+      
+      <guid>/posts/2020-04-25-magnetic-quarto/</guid>
+      <description>   </description>
+    </item>
     
     <item>
       <title>Clocks</title>
@@ -77,6 +86,27 @@ Filters Cheap carbon filters are available on Amazon, but not of great quality (
 {% include figure image_path=&amp;quot;graduation_cap.jpg&amp;rdquo; %}
 Motor The first step into planning was deciding what motor to use. I wanted the electronics to be as simple as possible.
  Cheap DC motors (that were available) were difficult to mount onto the cap I didn&amp;rsquo;t want a brushless quadcopter motor chopping off fingers Stepper motors were too heavy and needed an extra driver board  I ended up removing the blades on a PC cooling fan.</description>
+    </item>
+    
+    <item>
+      <title>Rendering Canvas to mp4 using NodeJS</title>
+      <link>/posts/2015-09-11-rendering-canvas-to-mp4/</link>
+      <pubDate>Fri, 11 Sep 2015 18:42:55 +0000</pubDate>
+      
+      <guid>/posts/2015-09-11-rendering-canvas-to-mp4/</guid>
+      <description>I recently put together a &amp;ldquo;it just works&amp;rdquo; version of WOsu and WOsu-record.
+WOsu is a JavaScript library for the rhythm game osu!. Although designed to use any sort of rendering (Canvas, CSS), its working implementation primarily relies on Three.js and WebGL.
+Currently the primary use of WOsu is the Web osu! Replay Viewer, which allows users to view replays straight on the web.
+WOsu-record is an Electron application that uses WOsu, ffmpeg and nodejs to record replays to a video file.</description>
+    </item>
+    
+    <item>
+      <title>Fast Simulation of Hair</title>
+      <link>/posts/2015-04-29-hair/</link>
+      <pubDate>Wed, 29 Apr 2015 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/2015-04-29-hair/</guid>
+      <description>    Paper Slides Video  </description>
     </item>
     
   </channel>
