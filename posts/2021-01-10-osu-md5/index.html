@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <title>Scott Wu - osu! Beatmap MD5 Collisions</title>
+
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="all,follow">
+<meta name="googlebot" content="index,follow,snippet,archive">
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<link href="/css/main.css" rel="stylesheet">
+
+<link rel="shortcut icon" href="/img/favicon.png">
+
+</head>
+
+<body>
+  <div class="container text-dark pt-3">
+    <div class="row">
+
+      <div class="col-12 col-sm-12 col-md-12 col-lg-3 col-xl-3">
+        <div class="sidebar">
+
+  <div class="h2 text-center">
+    <a href="/">
+      Scott Wu
+      
+    </a>
+  </div>
+
+  <div class="text-center pb-1">
+    <img src="/img/headshot.png" class="rounded-circle" style="max-width: 200px">
+  </div>
+
+  
+  <div class="text-center">
+    Pineapple connoisseur and DIY enthusiast
+  </div>
+  
+
+  <hr class="m-2">
+
+  <div class="container-fluid px-3">
+  <div class="row justify-content-center">
+    
+    <div class="col-auto col-lg-8 col-xl-8">
+      <a href="mailto:me@scwu.io" target="_new">
+        <i class="fa fa-envelope"></i>
+        Email
+      </a>
+    </div>
+    
+    
+    <div class="col-auto col-lg-8 col-xl-8">
+      <a href="https://linkedin.com/in/scswu" target="_new">
+        <i class="fa fa-linkedin"></i>
+        LinkedIn
+      </a>
+    </div>
+    
+    
+    <div class="col-auto col-lg-8 col-xl-8">
+      <a href="https://github.com/ScottSWu" target="_new">
+        <i class="fa fa-github"></i>
+        Github
+      </a>
+    </div>
+    
+    
+    <div class="col-auto col-lg-8 col-xl-8">
+      <a href="https://instagram.com/scswu" target="_new">
+        <i class="fa fa-instagram"></i>
+        Instagram
+      </a>
+    </div>
+    
+  </div>
+</div>
+
+
+  <hr class="m-2">
+
+  <div class="container-fluid px-3">
+    <div class="row justify-content-center">
+      
+        <div class="col-auto">
+          <a href="/posts/">
+            Posts
+          </a>
+        </div>
+      
+        <div class="col-auto">
+          <a href="/tags/">
+            All Tags
+          </a>
+        </div>
+      
+        <div class="col-auto">
+          <a href="/tags/project/">
+            Projects
+          </a>
+        </div>
+      
+        <div class="col-auto">
+          <a href="/tags/instagram/">
+            Photography
+          </a>
+        </div>
+      
+    </div>
+  </div>
+
+</div>
+
+      </div>
+
+      <div class="col-12 col-sm-12 col-md-12 col-lg-9 col-xl-9">
+        
+  <div class="post-content w-100">
+    <h1 class="post-title">
+      osu! Beatmap MD5 Collisions
+    </h1>
+
+    
+    
+    
+    <p>A long proposed osu! multiplayer feature is to allow players to play different difficulties within the same beatmap set. In a casual setting, players of different skill levels can enjoy multiplayer together without having to worry about a map being too difficult for one, or too easy for another. This is especially the case when introducing friends who are new to the game.</p>
+<p>osu! uses MD5 hashes of <code>.osu</code> files to lookup beatmaps. In the case of multiplayer, unsubmitted maps picked by the host are sent to other players in the room by name and hash. If two <code>.osu</code> files have the same MD5 hash, then maybe players can select different versions (difficulties) while the client and server think that they are the same map.</p>
+<p>In this proof of concept, we use <a href="https://github.com/cr-marcstevens/hashclash">hashclash</a> to perform a <a href="https://en.wikipedia.org/wiki/Collision_attack#Chosen-prefix_collision_attack">chosen-prefix-collision</a> on two different beatmaps: <a href="https://osu.ppy.sh/beatmapsets/268851#osu/612045">AKINO from bless4 - MIIRO (Resolve)</a> and <a href="https://osu.ppy.sh/beatmapsets/343365#osu/760743">Hanatan - Ai no Scenario (Skystar&rsquo;s Extra)</a>, both roughly about 6 stars in difficulty.</p>
+<h2 id="preparing-the-osu-files">Preparing the .osu files</h2>
+<p>Before running the CPC attack, we should first modify the beatmaps as if they were part of the same set, as well as add a fake section header so that the random suffix bytes minimally interfere with the beatmap parsing.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">$ diff -U 1 &#34;AKINO from bless4 - MIIRO (xChippy) [Resolve].osu&#34; &#34;AKINO from bless4 - MIIRO (xChippy) [Resolve] edited.osu&#34;
+<span style="color:#f92672">--- &#34;AKINO from bless4 - MIIRO (xChippy) [Resolve].osu&#34;          2015-06-25 21:02:18.000000000 -0700
+</span><span style="color:#f92672"></span><span style="color:#a6e22e">+++ &#34;AKINO from bless4 - MIIRO (xChippy) [Resolve] edited.osu&#34;   2020-12-20 17:19:01.728245100 -0800
+</span><span style="color:#a6e22e"></span><span style="color:#75715e">@@ -21,12 +21,10 @@
+</span><span style="color:#75715e"></span> [Metadata]
+<span style="color:#f92672">-Title:MIIRO
+</span><span style="color:#f92672">-TitleUnicode:海色
+</span><span style="color:#f92672">-Artist:AKINO from bless4
+</span><span style="color:#f92672">-ArtistUnicode:AKINO from bless4
+</span><span style="color:#f92672"></span><span style="color:#a6e22e">+Title:MIIRO vs. Ai no Scenario (Collision ver.)
+</span><span style="color:#a6e22e">+TitleUnicode:海色 vs. アイのシナリオ (Collision ver.)
+</span><span style="color:#a6e22e">+Artist:AKINO from bless4 &amp; Hanatan
+</span><span style="color:#a6e22e">+ArtistUnicode:AKINO from bless4 &amp; 花たん
+</span><span style="color:#a6e22e"></span> Creator:xChippy
+<span style="color:#f92672">-Version:Resolve
+</span><span style="color:#f92672"></span><span style="color:#a6e22e">+Version:MIIRO - Resolve (MD5)
+</span><span style="color:#a6e22e"></span> Source:艦隊これくしょん -艦これ-
+ Tags:Kantai Collection Kancolle opening op jonathanlfj nyquill oyatsu natsu kibbleru
+<span style="color:#f92672">-BeatmapID:612045
+</span><span style="color:#f92672">-BeatmapSetID:268851
+</span><span style="color:#f92672"></span>
+<span style="color:#75715e">@@ -1108 +1106,3 @@
+</span><span style="color:#75715e"></span> 376,192,250680,1,14,0:0:0:0:
+<span style="color:#a6e22e">+
+</span><span style="color:#a6e22e">+[Metadata]
+</span></code></pre></div><p>In this example, we update the <strong>Title</strong> and <strong>Artist</strong> to contain both beatmaps. We also update <strong>Version</strong> to reflect the map, and remove <strong>BeatmapID</strong> and <strong>BeatmapSetID</strong>. At the very end of the map, we add a <code>[Metadata]</code> section header, with a trailing a newline. osu! fails to process garbage bytes in the <code>[HitObjects]</code> section, but only displays a warning for malformed <code>[Metadata]</code>.</p>
+<p>An alternative method was to take advantage of the fact that hit objects ended with a &ldquo;hitsound filename&rdquo;, though it was not resilient to newlines generated by the collision.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">$ diff -U 1 &#34;Hanatan - Ai no Scenario (Chaoslitz) [Skystar&#39;s Extra].osu&#34; &#34;Hanatan - Ai no Scenario (Chaoslitz) [Skystar&#39;s Extra] edited.osu&#34;
+<span style="color:#f92672">--- &#34;Hanatan - Ai no Scenario (Chaoslitz) [Skystar&#39;s Extra].osu&#34;          2015-11-28 08:45:38.000000000 -0800
+</span><span style="color:#f92672"></span><span style="color:#a6e22e">+++ &#34;Hanatan - Ai no Scenario (Chaoslitz) [Skystar&#39;s Extra] edited.osu&#34;   2020-12-20 17:19:02.055544100 -0800
+</span><span style="color:#a6e22e"></span><span style="color:#75715e">@@ -20,12 +20,10 @@
+</span><span style="color:#75715e"></span> [Metadata]
+<span style="color:#f92672">-Title:Ai no Scenario
+</span><span style="color:#f92672">-TitleUnicode:アイのシナリオ
+</span><span style="color:#f92672">-Artist:Hanatan
+</span><span style="color:#f92672">-ArtistUnicode:花たん
+</span><span style="color:#f92672"></span><span style="color:#a6e22e">+Title:MIIRO vs. Ai no Scenario (Collision ver.)
+</span><span style="color:#a6e22e">+TitleUnicode:海色 vs. アイのシナリオ (Collision ver.)
+</span><span style="color:#a6e22e">+Artist:AKINO from bless4 &amp; Hanatan
+</span><span style="color:#a6e22e">+ArtistUnicode:AKINO from bless4 &amp; 花たん
+</span><span style="color:#a6e22e"></span> Creator:Chaoslitz
+<span style="color:#f92672">-Version:Skystar&#39;s Extra
+</span><span style="color:#f92672"></span><span style="color:#a6e22e">+Version:Ai no Scenario - Skystar&#39;s Extra (MD5)
+</span><span style="color:#a6e22e"></span> Source:
+ Tags:CHiCO with HoneyWorks nico douga magic kaito 1412 まじっく快斗1412 skystar amamiya yuko gaia kawaiwkyik rizia
+<span style="color:#f92672">-BeatmapID:760743
+</span><span style="color:#f92672">-BeatmapSetID:343365
+</span><span style="color:#f92672"></span>
+<span style="color:#75715e">@@ -1494 +1492,3 @@
+</span><span style="color:#75715e"></span> 343,91,257543,1,0,0:0:0:0:
+<span style="color:#a6e22e">+
+</span><span style="color:#a6e22e">+[Metadata]
+</span></code></pre></div><p>The same is done for the other beatmap, with a different <strong>Version</strong>.</p>
+<h2 id="running-hashclash">Running hashclash</h2>
+<p>The hashclash implementation begins with a CUDA-optimized birthday search, followed by a CPU heavy collision search. On a relatively powerful CPU and GPU (i.e. desktop i7 + gtx 1080), the birthday search takes less than an hour, and the collision search 3 - 4 hours.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git clone git@github.com:cr-marcstevens/hashclash.git
+$ cd hashclash
+$ mkdir cpc_workdir
+$ cd cpc_workdir
+$ cp ..../miiro.osu ..../ai_no_scenario.osu .
+$ ../scripts/cpc.sh miiro.osu ai_no_scenario.osu
+</code></pre></div><p>When hashclash finishes, it will generate colliding <code>.coll</code> files.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ md5sum miiro.osu.coll ai_no_scenario.osu.coll
+059ecf662e25d80a62f141485ac61aea  miiro.osu.coll
+059ecf662e25d80a62f141485ac61aea  ai_no_scenario.osu.coll
+</code></pre></div><h2 id="packaging-osz-files">Packaging osz files</h2>
+<p>With the colliding beatmaps, we can now construct two different osz archives, using resources from the original beatmaps.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ls -1 <span style="color:#e6db74">&#34;AKINO from bless4 - MIIRO (MD5)&#34;</span>
+48320625_p0.jpg
+<span style="color:#e6db74">&#39;AKINO from bless4 - MIIRO (xChippy) [Resolve].osu&#39;</span>
+BGyey.jpg
+KancolleBG.jpg
+Wheee.mp3
+normal-hitclap3.wav
+soft-hitclap2.wav
+soft-hitclap3.wav
+soft-hitwhistle2.wav
+soft-sliderslide.wav
+soft-sliderslide2.wav
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ls -1 <span style="color:#e6db74">&#34;Hanatan - Ai no Scenario (MD5)&#34;</span>
+<span style="color:#e6db74">&#39;Hanatan - Ai no Scenario (Chaoslitz) [Skystar&#39;</span><span style="color:#ae81ff">\&#39;</span><span style="color:#e6db74">&#39;s Extra].osu&#39;</span>
+bg.jpg
+drum-hitclap3.wav
+drum-hitnormal.wav
+drum-hitnormal2.wav
+drum-sliderslide2.wav
+normal-hitclap.wav
+normal-slidertick4.wav
+scenario.mp3
+soft-hitclap.wav
+soft-hitnormal.wav
+soft-hitnormal3.wav
+soft-sliderslide2.wav
+soft-sliderslide3.wav
+video.flv
+</code></pre></div>
+  </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

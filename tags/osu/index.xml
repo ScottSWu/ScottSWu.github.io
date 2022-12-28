@@ -6,10 +6,20 @@
     <description>Recent content in osu! on Scott Wu</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 20 May 2017 08:02:23 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 10 Jan 2021 19:05:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/osu/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>osu! Beatmap MD5 Collisions</title>
+      <link>/posts/2021-01-10-osu-md5/</link>
+      <pubDate>Sun, 10 Jan 2021 19:05:00 +0000</pubDate>
+      
+      <guid>/posts/2021-01-10-osu-md5/</guid>
+      <description>A long proposed osu! multiplayer feature is to allow players to play different difficulties within the same beatmap set. In a casual setting, players of different skill levels can enjoy multiplayer together without having to worry about a map being too difficult for one, or too easy for another. This is especially the case when introducing friends who are new to the game.
+osu! uses MD5 hashes of .osu files to lookup beatmaps.</description>
+    </item>
     
     <item>
       <title>osu! with Eye Tracking</title>

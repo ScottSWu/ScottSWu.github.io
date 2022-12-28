@@ -148,3 +148,23 @@ console.log(table.map((v, i) => `rgba(0, 0, 0, ${alpha - v}) ${i}%,`).join("\n")
 .post-title .backdrop {
   background-color: rgba(0, 0, 0, 0.5);
 }
+
+.post-content h1.post-title {
+  font-size: 2.0em;
+}
+
+.post-content h1 {
+  font-size: 1.8em;
+}
+
+.post-content h2 {
+  font-size: 1.5em;
+}
+
+.post-content h3 {
+  font-size: 1.2em;
+}
+
+.post-content .highlight pre {
+  padding: 1em;
+}
